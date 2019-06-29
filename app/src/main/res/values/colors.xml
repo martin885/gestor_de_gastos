@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#42423F</color>
+    <color name="colorPrimaryDark">#1D1D1B</color>
+    <color name="colorAccent">#F14400</color>
+    <color name="colorFondo">#1D1D1B</color>
+    <color name="colorBordes">#42423F</color>
+    <color name="colorDestacado">#7A7A78</color>
+    <color name="colorGastosBotones">#F14400</color>
+    <color name="colorIngresos">#00BEDD</color>
+    <color name="colorSaldo">#E4FF15</color>
+    <color name="colorHogar">#F14400</color>
+    <color name="colorFacturas">#E4FF15</color>
+    <color name="colorAlimentos">#00BEDD</color>
+    <color name="colorProvisiones">#E60B0B</color>
+    <color name="colorSalud">#32E900</color>
+    <color name="colorIndumentaria">#D800D9</color>
+    <color name="colorEntretenimiento">#1574FF</color>
+    <color name="colorNiños">#C18F14</color>
+    <color name="colorGasolina">#577BFF</color>
+    <color name="colorVehiculo">#A59CFF</color>
+    <color name="colorVacaciones">#A1DB00</color>
+    <color name="colorRegalos">#A63B11</color>
+    <color name="colorGeneral">#AAB23F</color>
+    <color name="colorDeporte">#F14400</color>
+    <color name="colorSueldo">#00FF2A</color>
+    <color name="colorDepositos">#FFDD17</color>
+    <color name="colorAhorros">#0990CC</color>
+</resources>

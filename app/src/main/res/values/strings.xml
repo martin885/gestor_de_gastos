@@ -1,0 +1,50 @@
+<resources>
+    <string name="app_name">gestor_de_gastos</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="gastos_hogar">Hogar</string>
+    <string name="gastos_facturas">Facturas</string>
+    <string name="gastos_alimentos">Alimentos</string>
+    <string name="gastos_provisiones">Provisiones</string>
+    <string name="gastos_salud">Salud</string>
+    <string name="gastos_indumentaria">Indumentaria</string>
+    <string name="gastos_entretenimiento">Entrentenimiento</string>
+    <string name="gastos_niños">Niños</string>
+    <string name="gastos_gasolina">Gasolina</string>
+    <string name="gastos_vehiculo">Vehículo</string>
+    <string name="gastos_vacaciones">Vacaciones</string>
+    <string name="gastos_regalos">Regalos</string>
+    <string name="gastos_general">General</string>
+    <string name="gastos_deporte">Deporte</string>
+    <string name="ingresos_sueldo">Sueldo</string>
+    <string name="ingresos_depositos">Depósitos</string>
+    <string name="ingresos_ahorros">Ahorros</string>
+    <string name="colorPrimary">#42423F</string>
+    <string name="colorPrimaryDark">#1D1D1B</string>
+    <string name="colorAccent">#F14400</string>
+    <string name="colorFondo">#1D1D1B</string>
+    <string name="colorBordes">#42423F</string>
+    <string name="colorDestacado">#7A7A78</string>
+    <string name="colorGastosBotones">#F14400</string>
+    <string name="colorIngresos">#00BEDD</string>
+    <string name="colorSaldo">#E4FF15</string>
+    <string name="colorHogar">#F14400</string>
+    <string name="colorFacturas">#E4FF15</string>
+    <string name="colorAlimentos">#00BEDD</string>
+    <string name="colorProvisiones">#E60B0B</string>
+    <string name="colorSalud">#32E900</string>
+    <string name="colorIndumentaria">#D800D9</string>
+    <string name="colorEntretenimiento">#1574FF</string>
+    <string name="colorNiños">#C18F14</string>
+    <string name="colorGasolina">#577BFF</string>
+    <string name="colorVehiculo">#A59CFF</string>
+    <string name="colorVacaciones">#A1DB00</string>
+    <string name="colorRegalos">#A63B11</string>
+    <string name="colorGeneral">#AAB23F</string>
+    <string name="colorDeporte">#F14400</string>
+    <string name="colorSueldo">#00FF2A</string>
+    <string name="colorDepositos">#FFDD17</string>
+    <string name="colorAhorros">#0990CC</string>
+
+</resources>
