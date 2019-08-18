@@ -65,6 +65,7 @@ public class GastosFragment extends Fragment {
         //cargarGraficos(view);
 
         Graficos graficos = new Graficos();
+
         graficos.cargarGraficos(view);
 
         FloatingActionButton fab = view.findViewById(R.id.fab);
