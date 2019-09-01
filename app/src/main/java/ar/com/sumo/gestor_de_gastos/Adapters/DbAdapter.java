@@ -18,8 +18,7 @@ public class DbAdapter {
     private Context context;
     private DBHelper dbHelper;
     private static final String TABLA_TRANSACCION = "transaccion";
-    private static final String COLUMN_CURRENCY_NAME = "NOMBRE_MONEDA";
-    private static final String COLUMN_CURRENCY_VALUE = "VALOR_MONEDA";
+
     private SQLiteDatabase db;
 
 
@@ -87,14 +86,17 @@ public class DbAdapter {
                               double monto,
                               boolean fijo,
                               Date fecha,
-                              String detalle) {
+                              String detalles) {
         db.execSQL("INSERT INTO " + TABLA_TRANSACCION +
-                        " VALUES(null,?,?,?,?,?)",
-                new String[]{nombreCategoria,
-                        colorCategoria,
+                        " VALUES (null,?,5,1,?,?,?)",
+                new String[]{
                         String.valueOf(monto),
                         String.valueOf(fijo),
                         fecha.toString(),
-                        detalle});
+                        detalles});
+    }
+
+    public void close(){
+        db.close();
     }
 }

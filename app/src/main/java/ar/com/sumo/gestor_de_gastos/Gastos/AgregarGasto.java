@@ -7,11 +7,14 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import ar.com.sumo.gestor_de_gastos.Adapters.AdapterRecyclerViewGastos;
@@ -29,50 +32,44 @@ public class AgregarGasto extends AppCompatActivity {
     private DbAdapter db;
     private double monto;
     private boolean fijo;
-    private Date fecha;
-    private String detalle;
+    private Date fecha = new Date();
+    private String detalles = "";
     private String categoriaNombre;
     private String colorCategoria;
     private TextView guardar;
+    private ImageButton detallesGastos;
+    private TextView salirGasto;
+    private EditText mMonto;
+    private CheckBox mFijo;
+    private Calendar mFecha;
+
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agregar_gasto);
 
-        //findView
-        Toolbar toolbar = findViewById(R.id.toolbar_gastos);
-        TextView salirGasto = findViewById(R.id.salirGastos);
-        ImageButton detallesGastos = findViewById(R.id.detalles);
-        recyclerAgregarGastos = findViewById(R.id.recyclerAgregarGastos);
-        guardar = findViewById(R.id.guardar_gasto);
-        //toolbar
+        cargarItems();
 
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.mipmap.izquierda);
-
-        //salir
+        //----------------SALIR---------------------------
         salirGasto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 volver();
-
             }
         });
 
-        //detalles
+        //----------------DETALLES------------------------
         detallesGastos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), DetallesGastos.class);
-                startActivity(i);
+                startActivityForResult(i, RESULT_OK);
             }
         });
 
-
-        //categorias de gastos
+        //---------------CATEGORIAS DE GASTOS----------------------
         AgregarCategorias agregar = new AgregarCategorias();
         categoriasGastos = agregar.agregarCategoriasGastos(this);
         recyclerAgregarGastos.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
@@ -81,20 +78,19 @@ public class AgregarGasto extends AppCompatActivity {
         adaptador.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "n" + categoriasGastos.get(recyclerAgregarGastos.getChildAdapterPosition(v)).getNombre(), Toast.LENGTH_SHORT).show();
-                categoriaNombre = "n" + categoriasGastos.get(recyclerAgregarGastos.getChildAdapterPosition(v)).getNombre();
+                //Toast.makeText(getApplicationContext(), "n" + categoriasGastos.get(recyclerAgregarGastos.getChildAdapterPosition(v)).getNombre(), Toast.LENGTH_SHORT).show();
+                categoriaNombre = categoriasGastos.get(recyclerAgregarGastos.getChildAdapterPosition(v)).getNombre();
+                colorCategoria = categoriasGastos.get(recyclerAgregarGastos.getChildAdapterPosition(v)).getColor();
             }
         });
 
-        //base de datos
-        db = new DbAdapter(this);
-        db.abrir();
-
-        //guardar
+        //------------------GUARDAR--------------------------------
         guardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), categoriaNombre, Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), categoriaNombre, Toast.LENGTH_LONG).show();
+                db.insertarGasto(categoriaNombre, colorCategoria, monto, fijo, fecha, detalles);
+                volver();
             }
         });
 
@@ -108,7 +104,37 @@ public class AgregarGasto extends AppCompatActivity {
 
 
     private void volver() {
+        db.close();
         Intent i = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(i);
+    }
+
+    private void cargarItems() {
+        //---------------FINDVIEW--------------------------
+        toolbar = findViewById(R.id.toolbar_gastos);
+        salirGasto = findViewById(R.id.salirGastos);
+        detallesGastos = findViewById(R.id.detalles);
+        recyclerAgregarGastos = findViewById(R.id.recyclerAgregarGastos);
+        guardar = findViewById(R.id.guardar_gasto);
+        mMonto = findViewById(R.id.monto_gasto);
+        mFijo = findViewById(R.id.gasto_fijo);
+        //mFecha=;
+
+        //----------------TOOLBAR-------------------------
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.mipmap.izquierda);
+
+        //----------------DATABASE------------------------
+        db = new DbAdapter(this);
+        db.abrir();
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == RESULT_OK) {
+            detalles = data.getStringExtra("detalles");
+        }
     }
 }
