@@ -13,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -31,11 +32,13 @@ public class AgregarGasto extends AppCompatActivity {
     private RecyclerView recyclerAgregarGastos;
     private DbAdapter db;
     private double monto;
-    private boolean fijo;
-    private Date fecha = new Date();
+    private boolean fijo = false;
+    private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    private String fecha = sdf.format(Calendar.getInstance().getTime());
     private String detalles = "";
-    private String categoriaNombre;
-    private String colorCategoria;
+    private String categoriaNombre = "";
+    private String colorCategoria = "";
+    private int indiceColorCategoria;
     private TextView guardar;
     private ImageButton detallesGastos;
     private TextView salirGasto;
@@ -89,7 +92,16 @@ public class AgregarGasto extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //Toast.makeText(getApplicationContext(), categoriaNombre, Toast.LENGTH_LONG).show();
-                db.insertarGasto(categoriaNombre, colorCategoria, monto, fijo, fecha, detalles);
+
+                monto = Integer.valueOf(mMonto.getText().toString());
+                if (categoriaNombre.isEmpty() || monto == 0 || fecha.isEmpty()) {
+                    volver();
+                    Toast.makeText(getApplicationContext(), "No se ha guardado nada...", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                indiceColorCategoria = db.obtenerColor(colorCategoria);
+                db.insertarGasto(categoriaNombre, indiceColorCategoria, monto, fijo, fecha, detalles);
                 volver();
             }
         });

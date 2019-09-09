@@ -12,13 +12,14 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import ar.com.sumo.gestor_de_gastos.Adapters.AdapterRecyclerViewLegend;
+import ar.com.sumo.gestor_de_gastos.Adapters.DbAdapter;
 import ar.com.sumo.gestor_de_gastos.R;
 import ar.com.sumo.gestor_de_gastos.Transacciones.Transaccion;
 
 public class Graficos {
-
 
     private PieChart pieChart;
     private PieChart pieChartTotal;
@@ -26,6 +27,7 @@ public class Graficos {
     private PieChart pieChartDia;
     private RecyclerView recyclerPersonajes;
     private ArrayList<Transaccion> listaGastosCompleta;
+    private ArrayList<Transaccion> listaGastosMes;
     private ArrayList<Leyenda> listaGastosLeyenda;
     private PieDataSet dataSetPrincipal;
     private PieDataSet dataSetTotal;
@@ -35,11 +37,15 @@ public class Graficos {
     private ArrayList<PieEntry> valoresTotales;
     private ArrayList<PieEntry> valoresMensuales;
     private ArrayList<PieEntry> valoresDiarios;
+    private DbAdapter db;
+    Calendar calendar = Calendar.getInstance();
 
     public void cargarGraficos(View view) {
-
+        db = new DbAdapter(view.getContext());
+        db.abrir();
 
         listaGastosCompleta = new ArrayList<Transaccion>();
+        listaGastosMes = new ArrayList<Transaccion>();
         listaGastosLeyenda = new ArrayList<Leyenda>();
 
         cargarGraficoPrincipal(view);
@@ -53,6 +59,8 @@ public class Graficos {
 
         AdapterRecyclerViewLegend adaptador = new AdapterRecyclerViewLegend(listaGastosLeyenda);
         recyclerPersonajes.setAdapter(adaptador);
+
+        db.close();
     }
 
     private void cargarPieChartPrincipal(View view) {
@@ -227,7 +235,9 @@ public class Graficos {
 
     private void cargarGastosYColoresMes() {
         //Esto lo tengo que tomar de la base de datos
-        listaGastosCompleta = new TestGastos().crearGastos();
+        int mes = calendar.get(Calendar.MONTH)+1;
+        int año = calendar.get(Calendar.YEAR);
+        listaGastosMes = db.listaGastosMes(mes, año);
 
         //Toast.makeText(getContext(), "Largo lista: " + listaGastosCompleta.size(), Toast.LENGTH_LONG).show();
 
@@ -239,13 +249,13 @@ public class Graficos {
         ArrayList<Integer> listaColores = new ArrayList<Integer>();
         double valor = 0;
         boolean comparador = false;
-        for (int i = 0; i < listaGastosCompleta.size(); i++) {
+        for (int i = 0; i < listaGastosMes.size(); i++) {
             //comparo el valor de nombre de los objetos
-            if (i != listaGastosCompleta.size() - 1) {
-                comparador = listaGastosCompleta.get(i).
+            if (i != listaGastosMes.size() - 1) {
+                comparador = listaGastosMes.get(i).
                         getCategoria().
                         getNombre().
-                        equals(listaGastosCompleta.
+                        equals(listaGastosMes.
                                 get(i + 1).
                                 getCategoria().
                                 getNombre());
@@ -254,14 +264,14 @@ public class Graficos {
             }
 
             if (comparador) {
-                valor += listaGastosCompleta.get(i).getMonto();
+                valor += listaGastosMes.get(i).getMonto();
             } else {
-                valor += listaGastosCompleta.get(i).getMonto();
+                valor += listaGastosMes.get(i).getMonto();
                 //Log.d("COMPARADOR","="+comparador);
                 PieEntry pieEntry = new PieEntry((float) valor);
                 valoresMensuales.add(pieEntry);
                 //dataSet.addEntry(pieEntry );
-                listaColores.add(Color.parseColor(listaGastosCompleta.get(i).getCategoria().getColor()));
+                listaColores.add(Color.parseColor(listaGastosMes.get(i).getCategoria().getColor()));
                 //listaGastosLeyenda.add(new Leyenda(listaGastosCompleta.get(i).getCategoria(), valor));
                 valor = 0;
             }

@@ -49,7 +49,8 @@ public class DBHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS " + TABLA_TRANSACCION +
                 " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "MONTO REAL, " +
-                "CATEGORIA_ID INTEGER,TIPO_ID INTEGER, " +
+                "CATEGORIA_ID INTEGER," +
+                "TIPO_ID INTEGER, " +
                 "FIJO NUMERIC," +
                 "FECHA NUMERIC, " +
                 "DETALLE TEXT," +

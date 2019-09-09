@@ -18,7 +18,7 @@ public class DbAdapter {
     private Context context;
     private DBHelper dbHelper;
     private static final String TABLA_TRANSACCION = "transaccion";
-
+    private static final String TABLA_CATEGORIA = "categoria";
     private SQLiteDatabase db;
 
 
@@ -37,9 +37,8 @@ public class DbAdapter {
         //Date date = sdf.parse(dateString);
         Cursor c = db.rawQuery("SELECT * FROM " + TABLA_TRANSACCION +
                 " JOIN CATEGORIA ON " + TABLA_TRANSACCION +
-                ".CATEGORIA_ID=CATEGORIA.ID " +
-                "WHERE STRFTIME('%m',FECHA)=? " +
-                "AND STRFTIME('%y', FECHA)=? ", new String[]{String.valueOf(mes), String.valueOf(año)});
+                ".CATEGORIA_ID=CATEGORIA.ID " , null);
+
         ArrayList<Transaccion> listaGastos = new ArrayList<Transaccion>();
 
         if (c.moveToFirst()) {
@@ -50,10 +49,10 @@ public class DbAdapter {
                     String categoria = c.getString(c.getColumnIndex("CATEGORIA"));
                     String colorCategoria = c.getString(c.getColumnIndex("COLOR_CATEGORIA"));
                     double monto = c.getDouble(c.getColumnIndex("MONTO"));
-                    boolean fijo = c.getInt(c.getColumnIndex("Fijo")) != 0;
-                    Date fecha = sdf.parse(c.getString(c.getColumnIndex("FECHA")));
+                    boolean fijo = c.getInt(c.getColumnIndex("FIJO")) != 0;
+                    //Date fecha = sdf.parse(c.getString(c.getColumnIndex("FECHA")));
                     String detalle = c.getString(c.getColumnIndex("DETALLE"));
-                    Gasto gasto = new Gasto(categoria, colorCategoria, monto, fijo, fecha, detalle);
+                    Gasto gasto = new Gasto(categoria, colorCategoria, monto, fijo, new Date(), detalle);
                     listaGastos.add(gasto);
 //                    sqLiteDatabase.execSQL("CREATE TABLE " + TABLA_CATEGORIA +
 //                            " (ID INTEGER PRIMARY KEY AUTOINCREMENT, MONTO REAL, " +
@@ -67,7 +66,7 @@ public class DbAdapter {
 //                contactosCel.add(mCursor.getString(mCursor.getColumnIndex("NUMBER")));
 
 
-                } catch (ParseException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                     break;
                 }
@@ -76,27 +75,38 @@ public class DbAdapter {
 
             return listaGastos;
         } else {
-            return null;
+            return listaGastos;
         }
 
     }
 
     public void insertarGasto(String nombreCategoria,
-                              String colorCategoria,
+                              int indiceColorCategoria,
                               double monto,
                               boolean fijo,
-                              Date fecha,
+                              String fecha,
                               String detalles) {
         db.execSQL("INSERT INTO " + TABLA_TRANSACCION +
-                        " VALUES (null,?,5,1,?,?,?)",
+                        " VALUES (null,?,?,1,?,?,?)",
                 new String[]{
                         String.valueOf(monto),
+                        String.valueOf(indiceColorCategoria),
                         String.valueOf(fijo),
-                        fecha.toString(),
+                        fecha,
                         detalles});
     }
 
-    public void close(){
+    public int obtenerColor(String color) {
+        Cursor cursor = db.rawQuery("SELECT id FROM " + TABLA_CATEGORIA + " WHERE color_categoria=?", new String[]{color});
+        int indiceColor = 0;
+        if (cursor.moveToFirst()) {
+            indiceColor = cursor.getInt(cursor.getColumnIndex("ID"));
+        }
+        return indiceColor;
+    }
+
+
+    public void close() {
         db.close();
     }
 }

@@ -27,10 +27,12 @@ public class Calendarios {
         }
         calendarView.setEvents(events);
         calendarView.setOnDayClickListener(eventDay ->
-                Toast.makeText(view.getContext(),
-                        eventDay.getCalendar().getTime().toString() + " "
-                                + eventDay.isEnabled(),
-                        Toast.LENGTH_SHORT).show());
+        {
+            Toast.makeText(view.getContext(),
+                    eventDay.getCalendar().getTime().toString() + " "
+                            + eventDay.isEnabled(),
+                    Toast.LENGTH_SHORT).show();
+        });
     }
 
 }
