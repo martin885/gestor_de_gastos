@@ -26,8 +26,7 @@ public class Graficos {
     private PieChart pieChartMes;
     private PieChart pieChartDia;
     private RecyclerView recyclerPersonajes;
-    private ArrayList<Transaccion> listaGastosCompleta;
-    private ArrayList<Transaccion> listaGastosMes;
+    private ArrayList<Transaccion> listaGastos;
     private ArrayList<Leyenda> listaGastosLeyenda;
     private PieDataSet dataSetPrincipal;
     private PieDataSet dataSetTotal;
@@ -44,8 +43,7 @@ public class Graficos {
         db = new DbAdapter(view.getContext());
         db.abrir();
 
-        listaGastosCompleta = new ArrayList<Transaccion>();
-        listaGastosMes = new ArrayList<Transaccion>();
+        listaGastos = new ArrayList<Transaccion>();
         listaGastosLeyenda = new ArrayList<Leyenda>();
 
         cargarGraficoPrincipal(view);
@@ -80,7 +78,7 @@ public class Graficos {
         pieChartTotal = view.findViewById(R.id.pieChartTotal);
         pieChartTotal.setUsePercentValues(true);
         pieChartTotal.getDescription().setEnabled(false);
-        pieChartTotal.setExtraOffsets(0, 0, 0, 0);
+        //pieChartTotal.setExtraOffsets(0, 0, 0, 0);
         pieChartTotal.setDragDecelerationFrictionCoef(0.95f);
         pieChartTotal.setHoleColor(Color.WHITE);
         pieChartTotal.getLegend().setEnabled(false);
@@ -121,6 +119,8 @@ public class Graficos {
 
         pieChartTotal.animateY(1000, Easing.EaseInOutCubic);
         PieData pieDataTotal = new PieData(dataSetTotal);
+        pieDataTotal.setValueFormatter(new PercentFormatter(pieChart, false));
+        pieDataTotal.setValueTextColor(Color.WHITE);
         pieChartTotal.setData(pieDataTotal);
 
     }
@@ -129,6 +129,8 @@ public class Graficos {
 
         pieChartMes.animateY(1000, Easing.EaseInOutCubic);
         PieData pieDataMes = new PieData(dataSetMes);
+        pieDataMes.setValueFormatter(new PercentFormatter(pieChart, false));
+        pieDataMes.setValueTextColor(Color.WHITE);
         pieChartMes.setData(pieDataMes);
 
     }
@@ -136,6 +138,8 @@ public class Graficos {
     private void cargarDataSetPieChartDia() {
         pieChartDia.animateY(1000, Easing.EaseInOutCubic);
         PieData pieDataDia = new PieData(dataSetDia);
+        pieDataDia.setValueFormatter(new PercentFormatter(pieChart, false));
+        pieDataDia.setValueTextColor(Color.WHITE);
         pieChartDia.setData(pieDataDia);
     }
 
@@ -143,7 +147,7 @@ public class Graficos {
 
 
         //Esto lo tengo que tomar de la base de datos
-        listaGastosCompleta = new TestGastos().crearGastos();
+        listaGastos = new TestGastos().crearGastos();
 
         //Toast.makeText(getContext(), "Largo lista: " + listaGastosCompleta.size(), Toast.LENGTH_LONG).show();
 
@@ -155,13 +159,13 @@ public class Graficos {
         ArrayList<Integer> listaColores = new ArrayList<Integer>();
         double valor = 0;
         boolean comparador = false;
-        for (int i = 0; i < listaGastosCompleta.size(); i++) {
+        for (int i = 0; i < listaGastos.size(); i++) {
             //comparo el valor de nombre de los objetos
-            if (i != listaGastosCompleta.size() - 1) {
-                comparador = listaGastosCompleta.get(i).
+            if (i != listaGastos.size() - 1) {
+                comparador = listaGastos.get(i).
                         getCategoria().
                         getNombre().
-                        equals(listaGastosCompleta.
+                        equals(listaGastos.
                                 get(i + 1).
                                 getCategoria().
                                 getNombre());
@@ -170,15 +174,15 @@ public class Graficos {
             }
 
             if (comparador) {
-                valor += listaGastosCompleta.get(i).getMonto();
+                valor += listaGastos.get(i).getMonto();
             } else {
-                valor += listaGastosCompleta.get(i).getMonto();
+                valor += listaGastos.get(i).getMonto();
                 //Log.d("COMPARADOR","="+comparador);
                 PieEntry pieEntry = new PieEntry((float) valor);
                 valoresPrincipales.add(pieEntry);
                 //dataSet.addEntry(pieEntry );
-                listaColores.add(Color.parseColor(listaGastosCompleta.get(i).getCategoria().getColor()));
-                listaGastosLeyenda.add(new Leyenda(listaGastosCompleta.get(i).getCategoria(), valor));
+                listaColores.add(Color.parseColor(listaGastos.get(i).getCategoria().getColor()));
+                listaGastosLeyenda.add(new Leyenda(listaGastos.get(i).getCategoria(), valor));
                 valor = 0;
             }
 
@@ -189,7 +193,7 @@ public class Graficos {
 
     private void cargarGastosYColoresTotal() {
         //Esto lo tengo que tomar de la base de datos
-        listaGastosCompleta = new TestGastos().crearGastos();
+        listaGastos = new TestGastos().crearGastos();
 
         //Toast.makeText(getContext(), "Largo lista: " + listaGastosCompleta.size(), Toast.LENGTH_LONG).show();
 
@@ -201,13 +205,13 @@ public class Graficos {
         ArrayList<Integer> listaColores = new ArrayList<Integer>();
         double valor = 0;
         boolean comparador = false;
-        for (int i = 0; i < listaGastosCompleta.size(); i++) {
+        for (int i = 0; i < listaGastos.size(); i++) {
             //comparo el valor de nombre de los objetos
-            if (i != listaGastosCompleta.size() - 1) {
-                comparador = listaGastosCompleta.get(i).
+            if (i != listaGastos.size() - 1) {
+                comparador = listaGastos.get(i).
                         getCategoria().
                         getNombre().
-                        equals(listaGastosCompleta.
+                        equals(listaGastos.
                                 get(i + 1).
                                 getCategoria().
                                 getNombre());
@@ -216,14 +220,14 @@ public class Graficos {
             }
 
             if (comparador) {
-                valor += listaGastosCompleta.get(i).getMonto();
+                valor += listaGastos.get(i).getMonto();
             } else {
-                valor += listaGastosCompleta.get(i).getMonto();
+                valor += listaGastos.get(i).getMonto();
                 //Log.d("COMPARADOR","="+comparador);
                 PieEntry pieEntry = new PieEntry((float) valor);
                 valoresTotales.add(pieEntry);
                 //dataSet.addEntry(pieEntry );
-                listaColores.add(Color.parseColor(listaGastosCompleta.get(i).getCategoria().getColor()));
+                listaColores.add(Color.parseColor(listaGastos.get(i).getCategoria().getColor()));
                 //listaGastosLeyenda.add(new Leyenda(listaGastosCompleta.get(i).getCategoria(), valor));
                 valor = 0;
             }
@@ -235,9 +239,9 @@ public class Graficos {
 
     private void cargarGastosYColoresMes() {
         //Esto lo tengo que tomar de la base de datos
-        int mes = calendar.get(Calendar.MONTH)+1;
-        int año = calendar.get(Calendar.YEAR);
-        listaGastosMes = db.listaGastosMes(mes, año);
+        String mes = String.valueOf(calendar.get(Calendar.MONTH) + 1);
+        String año = String.valueOf(calendar.get(Calendar.YEAR));
+        listaGastos = db.listaGastosMes(mes, año);
 
         //Toast.makeText(getContext(), "Largo lista: " + listaGastosCompleta.size(), Toast.LENGTH_LONG).show();
 
@@ -249,13 +253,13 @@ public class Graficos {
         ArrayList<Integer> listaColores = new ArrayList<Integer>();
         double valor = 0;
         boolean comparador = false;
-        for (int i = 0; i < listaGastosMes.size(); i++) {
+        for (int i = 0; i < listaGastos.size(); i++) {
             //comparo el valor de nombre de los objetos
-            if (i != listaGastosMes.size() - 1) {
-                comparador = listaGastosMes.get(i).
+            if (i != listaGastos.size() - 1) {
+                comparador = listaGastos.get(i).
                         getCategoria().
                         getNombre().
-                        equals(listaGastosMes.
+                        equals(listaGastos.
                                 get(i + 1).
                                 getCategoria().
                                 getNombre());
@@ -264,14 +268,14 @@ public class Graficos {
             }
 
             if (comparador) {
-                valor += listaGastosMes.get(i).getMonto();
+                valor += listaGastos.get(i).getMonto();
             } else {
-                valor += listaGastosMes.get(i).getMonto();
+                valor += listaGastos.get(i).getMonto();
                 //Log.d("COMPARADOR","="+comparador);
                 PieEntry pieEntry = new PieEntry((float) valor);
                 valoresMensuales.add(pieEntry);
                 //dataSet.addEntry(pieEntry );
-                listaColores.add(Color.parseColor(listaGastosMes.get(i).getCategoria().getColor()));
+                listaColores.add(Color.parseColor(listaGastos.get(i).getCategoria().getColor()));
                 //listaGastosLeyenda.add(new Leyenda(listaGastosCompleta.get(i).getCategoria(), valor));
                 valor = 0;
             }
@@ -283,7 +287,7 @@ public class Graficos {
 
     private void cargarGastosYColoresDia() {
         //Esto lo tengo que tomar de la base de datos
-        listaGastosCompleta = new TestGastos().crearGastos();
+        listaGastos = db.listaGastosDia();
 
         //Toast.makeText(getContext(), "Largo lista: " + listaGastosCompleta.size(), Toast.LENGTH_LONG).show();
 
@@ -295,13 +299,13 @@ public class Graficos {
         ArrayList<Integer> listaColores = new ArrayList<Integer>();
         double valor = 0;
         boolean comparador = false;
-        for (int i = 0; i < listaGastosCompleta.size(); i++) {
+        for (int i = 0; i < listaGastos.size(); i++) {
             //comparo el valor de nombre de los objetos
-            if (i != listaGastosCompleta.size() - 1) {
-                comparador = listaGastosCompleta.get(i).
+            if (i != listaGastos.size() - 1) {
+                comparador = listaGastos.get(i).
                         getCategoria().
                         getNombre().
-                        equals(listaGastosCompleta.
+                        equals(listaGastos.
                                 get(i + 1).
                                 getCategoria().
                                 getNombre());
@@ -310,14 +314,14 @@ public class Graficos {
             }
 
             if (comparador) {
-                valor += listaGastosCompleta.get(i).getMonto();
+                valor += listaGastos.get(i).getMonto();
             } else {
-                valor += listaGastosCompleta.get(i).getMonto();
+                valor += listaGastos.get(i).getMonto();
                 //Log.d("COMPARADOR","="+comparador);
                 PieEntry pieEntry = new PieEntry((float) valor);
                 valoresDiarios.add(pieEntry);
                 //dataSet.addEntry(pieEntry );
-                listaColores.add(Color.parseColor(listaGastosCompleta.get(i).getCategoria().getColor()));
+                listaColores.add(Color.parseColor(listaGastos.get(i).getCategoria().getColor()));
                 //listaGastosLeyenda.add(new Leyenda(listaGastosCompleta.get(i).getCategoria(), valor));
                 valor = 0;
             }

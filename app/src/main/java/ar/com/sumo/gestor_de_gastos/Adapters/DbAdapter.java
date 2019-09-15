@@ -32,12 +32,15 @@ public class DbAdapter {
     }
 
 
-    public ArrayList<Transaccion> listaGastosMes(int mes, int año) {
+    public ArrayList<Transaccion> listaGastosMes(String mes, String año) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         //Date date = sdf.parse(dateString);
+        if (Integer.valueOf(mes) < 10) {
+            mes = "0" + mes;
+        }
         Cursor c = db.rawQuery("SELECT * FROM " + TABLA_TRANSACCION +
                 " JOIN CATEGORIA ON " + TABLA_TRANSACCION +
-                ".CATEGORIA_ID=CATEGORIA.ID " , null);
+                ".CATEGORIA_ID=CATEGORIA.ID  WHERE FECHA LIKE '%/" + mes + "/" + año + "'", null);
 
         ArrayList<Transaccion> listaGastos = new ArrayList<Transaccion>();
 
@@ -50,21 +53,48 @@ public class DbAdapter {
                     String colorCategoria = c.getString(c.getColumnIndex("COLOR_CATEGORIA"));
                     double monto = c.getDouble(c.getColumnIndex("MONTO"));
                     boolean fijo = c.getInt(c.getColumnIndex("FIJO")) != 0;
-                    //Date fecha = sdf.parse(c.getString(c.getColumnIndex("FECHA")));
+                    Date fecha = sdf.parse(c.getString(c.getColumnIndex("FECHA")));
                     String detalle = c.getString(c.getColumnIndex("DETALLE"));
-                    Gasto gasto = new Gasto(categoria, colorCategoria, monto, fijo, new Date(), detalle);
+                    Gasto gasto = new Gasto(categoria, colorCategoria, monto, fijo, fecha, detalle);
                     listaGastos.add(gasto);
-//                    sqLiteDatabase.execSQL("CREATE TABLE " + TABLA_CATEGORIA +
-//                            " (ID INTEGER PRIMARY KEY AUTOINCREMENT, MONTO REAL, " +
-//                            "CATEGORIA_ID INTEGER,TIPO_ID INTEGER, " +
-//                            "FIJO NUMERIC," +
-//                            "FECHA NUMERIC, " +
-//                            "FOREIGN KEY (CATEGORIA_ID) REFERENCES CATEGORIA(ID)," +
-//                            "FOREIGN KEY (TIPO_ID) REFERENCES TIPO(ID))");
-                    //           Transaccion(String nombreCategoria, String colorCategoria, double monto, boolean fijo, Date fecha)
-//                contactos.add(mCursor.getString(mCursor.getColumnIndex("DISPLAY_NAME")));
-//                contactosCel.add(mCursor.getString(mCursor.getColumnIndex("NUMBER")));
 
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    break;
+                }
+                c.moveToNext();
+            }
+
+            return listaGastos;
+        } else {
+            return listaGastos;
+        }
+
+    }
+
+    public ArrayList<Transaccion> listaGastosDia() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        //Date date = sdf.parse(dateString);
+
+        Cursor c = db.rawQuery("SELECT * FROM " + TABLA_TRANSACCION +
+                " JOIN CATEGORIA ON " + TABLA_TRANSACCION +
+                ".CATEGORIA_ID=CATEGORIA.ID  WHERE FECHA=strftime('%d/%m/%Y','now')", null);
+
+        ArrayList<Transaccion> listaGastos = new ArrayList<Transaccion>();
+
+        if (c.moveToFirst()) {
+
+            while (!c.isAfterLast()) {
+                try {
+
+                    String categoria = c.getString(c.getColumnIndex("CATEGORIA"));
+                    String colorCategoria = c.getString(c.getColumnIndex("COLOR_CATEGORIA"));
+                    double monto = c.getDouble(c.getColumnIndex("MONTO"));
+                    boolean fijo = c.getInt(c.getColumnIndex("FIJO")) != 0;
+                    Date fecha = sdf.parse(c.getString(c.getColumnIndex("FECHA")));
+                    String detalle = c.getString(c.getColumnIndex("DETALLE"));
+                    Gasto gasto = new Gasto(categoria, colorCategoria, monto, fijo, fecha, detalle);
+                    listaGastos.add(gasto);
 
                 } catch (Exception e) {
                     e.printStackTrace();

@@ -62,7 +62,10 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:background="@drawable/edit_text"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:hint="0.0ARS"
+                android:imeOptions='actionDone'
                 android:inputType="numberDecimal"
                 android:paddingVertical="20dp"
                 android:textAlignment="center"

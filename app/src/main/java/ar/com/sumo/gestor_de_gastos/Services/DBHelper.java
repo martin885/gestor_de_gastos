@@ -52,7 +52,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 "CATEGORIA_ID INTEGER," +
                 "TIPO_ID INTEGER, " +
                 "FIJO NUMERIC," +
-                "FECHA NUMERIC, " +
+                "FECHA TEXT, " +
                 "DETALLE TEXT," +
                 "FOREIGN KEY (CATEGORIA_ID) REFERENCES CATEGORIA(ID)," +
                 "FOREIGN KEY (TIPO_ID) REFERENCES TIPO(ID))");
@@ -93,7 +93,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 "CATEGORIA_ID INTEGER," +
                 "TIPO_ID INTEGER, " +
                 "FIJO NUMERIC," +
-                "FECHA NUMERIC, " +
+                "FECHA TEXT, " +
                 "DETALLE TEXT," +
                 "FOREIGN KEY (CATEGORIA_ID) REFERENCES CATEGORIA(ID)," +
                 "FOREIGN KEY (TIPO_ID) REFERENCES TIPO(ID))");

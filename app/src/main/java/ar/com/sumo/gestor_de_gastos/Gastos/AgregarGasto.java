@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -71,6 +73,20 @@ public class AgregarGasto extends AppCompatActivity {
                 startActivityForResult(i, RESULT_OK);
             }
         });
+
+
+        //---------------SACAR FOCO CUANDO APRIETA DONE------------
+
+        /** mMonto.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        @Override public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+        if (i == EditorInfo.IME_ACTION_GO) {
+        //mMonto.clearFocus();
+        //getCurrentFocus().clearFocus();
+
+        }
+        return false;
+        }
+        });**/
 
         //---------------CATEGORIAS DE GASTOS----------------------
         AgregarCategorias agregar = new AgregarCategorias();
