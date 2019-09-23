@@ -140,6 +140,7 @@ public class Graficos {
         PieData pieDataDia = new PieData(dataSetDia);
         pieDataDia.setValueFormatter(new PercentFormatter(pieChart, false));
         pieDataDia.setValueTextColor(Color.WHITE);
+        pieDataDia.setValueTextSize(15);
         pieChartDia.setData(pieDataDia);
     }
 
@@ -147,7 +148,8 @@ public class Graficos {
 
 
         //Esto lo tengo que tomar de la base de datos
-        listaGastos = new TestGastos().crearGastos();
+        listaGastos = db.listaGastosTotal();
+        listaGastosLeyenda.clear();
 
         //Toast.makeText(getContext(), "Largo lista: " + listaGastosCompleta.size(), Toast.LENGTH_LONG).show();
 
@@ -193,7 +195,7 @@ public class Graficos {
 
     private void cargarGastosYColoresTotal() {
         //Esto lo tengo que tomar de la base de datos
-        listaGastos = new TestGastos().crearGastos();
+        listaGastos = db.listaGastosTotal();
 
         //Toast.makeText(getContext(), "Largo lista: " + listaGastosCompleta.size(), Toast.LENGTH_LONG).show();
 
@@ -240,8 +242,8 @@ public class Graficos {
     private void cargarGastosYColoresMes() {
         //Esto lo tengo que tomar de la base de datos
         String mes = String.valueOf(calendar.get(Calendar.MONTH) + 1);
-        String año = String.valueOf(calendar.get(Calendar.YEAR));
-        listaGastos = db.listaGastosMes(mes, año);
+        String anio = String.valueOf(calendar.get(Calendar.YEAR));
+        listaGastos = db.listaGastosMes(mes, anio);
 
         //Toast.makeText(getContext(), "Largo lista: " + listaGastosCompleta.size(), Toast.LENGTH_LONG).show();
 
@@ -287,7 +289,10 @@ public class Graficos {
 
     private void cargarGastosYColoresDia() {
         //Esto lo tengo que tomar de la base de datos
-        listaGastos = db.listaGastosDia();
+        String dia = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
+        String mes = String.valueOf(calendar.get(Calendar.MONTH) + 1);
+        String anio = String.valueOf(calendar.get(Calendar.YEAR));
+        listaGastos = db.listaGastosDia(dia, mes, anio);
 
         //Toast.makeText(getContext(), "Largo lista: " + listaGastosCompleta.size(), Toast.LENGTH_LONG).show();
 

@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         Date date= Calendar.getInstance().getTime();
         String today = formatter.format(date);
-        Log.d("FECHA", today);
+
 
 
     }

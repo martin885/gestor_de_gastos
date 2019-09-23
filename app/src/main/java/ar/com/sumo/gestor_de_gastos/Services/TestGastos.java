@@ -15,15 +15,15 @@ public class TestGastos {
         ArrayList<Transaccion> listaGastos = new ArrayList<Transaccion>();
         for (int i = 0; i < 10; i++) {
 
-            listaGastos.add(new Gasto("Entretenimiento", "#577BFF", new Random().nextDouble() * 100, false, Calendar.getInstance().getTime(),"hola"));
+            listaGastos.add(new Gasto("Entretenimiento", "#577BFF", new Random().nextDouble() * 100, false, Calendar.getInstance().getTime().toString(),"hola"));
         }
         for (int i = 0; i < 10; i++) {
 
-            listaGastos.add(new Gasto("General", "#1574FF", new Random().nextDouble() * 100, false, Calendar.getInstance().getTime(),"hola"));
+            listaGastos.add(new Gasto("General", "#1574FF", new Random().nextDouble() * 100, false, Calendar.getInstance().getTime().toString(),"hola"));
         }
         for (int i = 0; i < 10; i++) {
 
-            listaGastos.add(new Gasto("Gasolina", "#2071FF", new Random().nextDouble() * 100, false, Calendar.getInstance().getTime(),"hola"));
+            listaGastos.add(new Gasto("Gasolina", "#2071FF", new Random().nextDouble() * 100, false, Calendar.getInstance().getTime().toString(),"hola"));
         }
         return listaGastos;
     }

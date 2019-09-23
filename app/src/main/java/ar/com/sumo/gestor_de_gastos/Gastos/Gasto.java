@@ -6,7 +6,7 @@ import ar.com.sumo.gestor_de_gastos.Transacciones.CategoriaTransaccion;
 import ar.com.sumo.gestor_de_gastos.Transacciones.Transaccion;
 
 public class Gasto extends Transaccion {
-    public Gasto(String nombreCategoria, String colorCategoria, double monto, boolean fijo, Date fecha, String detalle) {
+    public Gasto(String nombreCategoria, String colorCategoria, double monto, boolean fijo, String fecha, String detalle) {
         super(nombreCategoria, colorCategoria, monto, fijo, fecha, detalle);
     }
 
@@ -44,7 +44,7 @@ public class Gasto extends Transaccion {
     }
 
     @Override
-    public Date getFecha() {
+    public String getFecha() {
         return super.getFecha();
     }
 
@@ -54,7 +54,7 @@ public class Gasto extends Transaccion {
     }
 
     @Override
-    public void setFecha(Date fecha) {
+    public void setFecha(String fecha) {
         super.setFecha(fecha);
     }
 

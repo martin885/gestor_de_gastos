@@ -35,6 +35,7 @@ public class PercentFormatter extends ValueFormatter {
 
     @Override
     public String getFormattedValue(float value) {
+
         return mFormat.format(value) + (percentSignSeparated ? " %" : "%");
     }
 
