@@ -36,7 +36,7 @@ public class DbAdapter {
     public ArrayList<Transaccion> listaGastosMes(String mes, String anio) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         //Date date = sdf.parse(dateString);
-        if (Integer.valueOf(mes) < 10) {
+        if (Integer.valueOf(mes) < 10 && !mes.contains("0")) {
             mes = "0" + mes;
         }
         Cursor c = db.rawQuery("SELECT * FROM " + TABLA_TRANSACCION +
@@ -76,13 +76,13 @@ public class DbAdapter {
     public ArrayList<Transaccion> listaGastosDia(String dia, String mes, String anio) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         //Date date = sdf.parse(dateString);
-        if (Integer.valueOf(dia) < 10) {
+        if (Integer.valueOf(dia) < 10 && !dia.contains("0")) {
             dia = "0" + dia;
         }
-        if (Integer.valueOf(mes) < 10) {
+        if (Integer.valueOf(mes) < 10 && !mes.contains("0")) {
             mes = "0" + mes;
         }
-
+        Log.i("FECHAS BASE DE DATOS:", dia + "/" + mes + "/" + anio);
         Cursor c = db.rawQuery("SELECT * FROM " + TABLA_TRANSACCION +
                 " JOIN CATEGORIA ON " + TABLA_TRANSACCION +
                 ".CATEGORIA_ID=CATEGORIA.ID  WHERE FECHA = '" + dia + "/" + mes + "/" + anio + "' ORDER BY CATEGORIA", null);

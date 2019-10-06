@@ -3,6 +3,7 @@ package ar.com.sumo.gestor_de_gastos.Services;
 import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 
 import com.github.mikephil.charting.animation.Easing;
@@ -38,11 +39,44 @@ public class Graficos {
     private ArrayList<PieEntry> valoresDiarios;
     private DbAdapter db;
     Calendar calendar = Calendar.getInstance();
+    String dia="";
+    String mes="";
+    String anio="";
+    String fecha;
 
     public void cargarGraficos(View view) {
         db = new DbAdapter(view.getContext());
         db.abrir();
 
+        listaGastos = new ArrayList<Transaccion>();
+        listaGastosLeyenda = new ArrayList<Leyenda>();
+
+        cargarGraficoPrincipal(view);
+        cargarGraficoTotal(view);
+        cargarGraficoMes(view);
+        cargarGraficoDia(view);
+
+
+        recyclerPersonajes = view.findViewById(R.id.recyclerLegend);
+        recyclerPersonajes.setLayoutManager(new LinearLayoutManager(view.getContext()));
+
+        AdapterRecyclerViewLegend adaptador = new AdapterRecyclerViewLegend(listaGastosLeyenda);
+        recyclerPersonajes.setAdapter(adaptador);
+
+        db.close();
+    }
+
+    public void cargarGraficos(View view, String fecha) {
+        db = new DbAdapter(view.getContext());
+        db.abrir();
+
+        this.fecha = fecha;
+        String[] fechas = new String[3];
+        fechas = fecha.split("/");
+        dia = fechas[0];
+        mes = fechas[1];
+        anio = fechas[2];
+        Log.i("FECHAS:", dia + "/" + mes + "/" + anio);
         listaGastos = new ArrayList<Transaccion>();
         listaGastosLeyenda = new ArrayList<Leyenda>();
 
@@ -241,8 +275,11 @@ public class Graficos {
 
     private void cargarGastosYColoresMes() {
         //Esto lo tengo que tomar de la base de datos
-        String mes = String.valueOf(calendar.get(Calendar.MONTH) + 1);
-        String anio = String.valueOf(calendar.get(Calendar.YEAR));
+        if (mes.isEmpty() || anio.isEmpty()) {
+            mes = String.valueOf(calendar.get(Calendar.MONTH) + 1);
+            anio = String.valueOf(calendar.get(Calendar.YEAR));
+        }
+
         listaGastos = db.listaGastosMes(mes, anio);
 
         //Toast.makeText(getContext(), "Largo lista: " + listaGastosCompleta.size(), Toast.LENGTH_LONG).show();
@@ -289,9 +326,12 @@ public class Graficos {
 
     private void cargarGastosYColoresDia() {
         //Esto lo tengo que tomar de la base de datos
-        String dia = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
-        String mes = String.valueOf(calendar.get(Calendar.MONTH) + 1);
-        String anio = String.valueOf(calendar.get(Calendar.YEAR));
+        if (dia.isEmpty() || mes.isEmpty() || anio.isEmpty()) {
+            dia = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
+            mes = String.valueOf(calendar.get(Calendar.MONTH) + 1);
+            anio = String.valueOf(calendar.get(Calendar.YEAR));
+        }
+
         listaGastos = db.listaGastosDia(dia, mes, anio);
 
         //Toast.makeText(getContext(), "Largo lista: " + listaGastosCompleta.size(), Toast.LENGTH_LONG).show();
