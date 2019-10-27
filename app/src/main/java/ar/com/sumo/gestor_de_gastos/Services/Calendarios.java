@@ -17,6 +17,12 @@ import ar.com.sumo.gestor_de_gastos.R;
 
 public class Calendarios {
 
+    TextView mesGasto1;
+    TextView mesGasto2;
+    SimpleDateFormat format;
+    String dateString;
+    String[] fecha;
+
     public void cargarCalendario(View view) {
 
         Calendar calendar = Calendar.getInstance();
@@ -27,33 +33,52 @@ public class Calendarios {
 
         Graficos graficos = new Graficos();
 
+        format = new SimpleDateFormat("dd/MM/yyyy");
+
+        dateString = format.format(Calendar.getInstance().getTime());
+
+        fecha = fechaSeparada(dateString);
+
+        graficos.cargarGraficos(view, dateString);
+
+        mesGasto1 = view.findViewById(R.id.mes_gasto_1);
+        mesGasto2 = view.findViewById(R.id.mes_gasto_2);
+
+        mesGasto1.setText(Mes(fecha[1], view) + " " + fecha[2]);
+
+        mesGasto2.setText(Mes(fecha[1], view) + " " + fecha[2]);
         events.add(new EventDay(calendar, R.drawable.ic_launcher_background));
 
-        try {
-            calendarView.setDate(calendar);
-        } catch (OutOfDateRangeException e) {
-            e.printStackTrace();
-        }
+
         calendarView.setEvents(events);
+
+
         calendarView.setOnDayClickListener(eventDay ->
         {
             SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 
-            String dateString = format.format(eventDay.getCalendar().getTime());
+            dateString = format.format(eventDay.getCalendar().getTime());
+
+            fecha = fechaSeparada(dateString);
 
             graficos.cargarGraficos(view, dateString);
-            TextView mes_gasto = view.findViewById(R.id.mes_gasto);
-            mes_gasto.setText(Mes(dateString, view));
+
+            mesGasto1.setText(Mes(fecha[1], view) + " " + fecha[2]);
+            mesGasto2.setText(Mes(fecha[1], view) + " " + fecha[2]);
+
+            events.add(new EventDay(eventDay.getCalendar(), R.drawable.ic_launcher_background));
+            calendarView.setEvents(events);
+            
 
         });
     }
 
 
     public String Mes(String mes_numero, View view) {
-        String[] fechas = mes_numero.split("/");
-        String mes = fechas[1];
+
         String mes_palabra = null;
-        switch (mes) {
+
+        switch (mes_numero) {
             case "01":
                 mes_palabra = view.getResources().getString(R.string.enero);
                 break;
@@ -94,4 +119,9 @@ public class Calendarios {
         return mes_palabra;
     }
 
+    public String[] fechaSeparada(String fecha) {
+        String[] fechas = fecha.split("/");
+
+        return fechas;
+    }
 }
