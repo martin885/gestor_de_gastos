@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.applandeo.materialcalendarview.CalendarView;
@@ -59,9 +60,10 @@ public class GastosFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_gastos, container, false);
+
+
         Calendarios calendario = new Calendarios();
         calendario.cargarCalendario(view);
-
         //cargarGraficos(view);
 
         Graficos graficos = new Graficos();
