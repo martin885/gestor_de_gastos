@@ -109,7 +109,7 @@ public class AgregarGasto extends AppCompatActivity {
             public void onClick(View v) {
                 //Toast.makeText(getApplicationContext(), categoriaNombre, Toast.LENGTH_LONG).show();
 
-                monto = Integer.valueOf(mMonto.getText().toString());
+                monto = Double.valueOf(mMonto.getText().toString());
                 if (categoriaNombre.isEmpty() || monto == 0 || fecha.isEmpty()) {
                     volver();
                     Toast.makeText(getApplicationContext(), "No se ha guardado nada...", Toast.LENGTH_SHORT).show();

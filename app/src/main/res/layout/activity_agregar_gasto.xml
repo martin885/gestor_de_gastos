@@ -70,7 +70,7 @@
                 android:paddingVertical="20dp"
                 android:textAlignment="center"
                 android:textColor="@android:color/white"
-                android:textColorHint="@color/colorPrimary" />
+                android:textColorHint="@color/colorPrimary"/>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerAgregarGastos"
